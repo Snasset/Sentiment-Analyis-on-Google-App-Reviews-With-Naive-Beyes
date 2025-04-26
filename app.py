@@ -109,7 +109,7 @@ elif menu == "Prediksi File CSV":
             pred_count = df['Prediction'].value_counts()
 
             fig, ax = plt.subplots()
-            pred_count.plot(kind='bar', color=['#66B3FF', '#99FF99', '#FF9999'])
+            pred_count.plot(kind='bar', color=['#99FF99', '#FF9999', '#66B3FF'])
             plt.xlabel('Label Prediksi')
             plt.ylabel('Jumlah')
             plt.title('Distribusi Hasil Prediksi')
