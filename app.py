@@ -5,6 +5,7 @@ import re
 import string
 import nltk
 from deep_translator import GoogleTranslator
+import matplotlib.pyplot as plt
 nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('punkt_tab')
@@ -103,6 +104,16 @@ elif menu == "Prediksi File CSV":
             vecs = vectorizer.transform(df['Preprocessed'])
             df['Prediction'] = model.predict(vecs)
             st.dataframe(df[[text_col, 'Prediction']])
+            
+            st.subheader("Visualisasi Jumlah Prediksi per Kelas")
+            pred_count = df['Prediction'].value_counts()
+
+            fig, ax = plt.subplots()
+            pred_count.plot(kind='bar', color=['#66B3FF', '#99FF99', '#FF9999'])
+            plt.xlabel('Label Prediksi')
+            plt.ylabel('Jumlah')
+            plt.title('Distribusi Hasil Prediksi')
+            st.pyplot(fig)
 
             # Download hasil
             csv_result = df[[text_col, 'Prediction']].to_csv(index=False).encode('utf-8')
@@ -112,3 +123,5 @@ elif menu == "Prediksi File CSV":
                 file_name='hasil_prediksi.csv',
                 mime='text/csv'
             )
+            
+            
