@@ -19,16 +19,12 @@ from sklearn.naive_bayes import MultinomialNB
 import joblib
 
 # --- Preprocessing Function ---
-from nltk.stem import SnowballStemmer
-
 stop_words = set(stopwords.words('english'))
-stemmer = SnowballStemmer('english')
 lemmatizer = WordNetLemmatizer()
 
 def cleaningText(text):
-    text = re.sub(r'@[A-Za-z0-9]+', '', text)
-    text = re.sub(r'#[A-Za-z0-9]+', '', text)
-    text = re.sub(r'RT[\s]', '', text)
+    text = re.sub(r'[@#][A-Za-z0-9]+', '', text)
+    text = re.sub(r'\b[A-Z]{2,3}\b(?=\s)', '', text)
     text = re.sub(r"http\S+", '', text)
     text = re.sub(r'[0-9]+', '', text)
     text = re.sub(r'[^\w\s]', '', text)
@@ -46,7 +42,7 @@ def tokenizingText(text):
 def filteringText(tokens):
     return [word for word in tokens if word not in stop_words]
 
-def stemmingText(tokens):
+def lemmatizeText(tokens):
     return [lemmatizer.lemmatize(word) for word in tokens]
 
 def toSentence(tokens):
@@ -58,7 +54,7 @@ def preprocess(text):
     text = casefoldingText(text)
     tokens = tokenizingText(text)
     tokens = filteringText(tokens)
-    tokens = stemmingText(tokens)
+    tokens = lemmatizeText(tokens)
     return toSentence(tokens)
 
 
